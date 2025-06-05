@@ -64,26 +64,17 @@
         <p><strong>Akku-Status:</strong> <span id="battery">Lädt...</span></p>
     </div>
     <script>
-        function getBrowser()
-        {
-            let userAgent = navigator.userAgent;
-            
-            if (userAgent.includes("Chrome") && !userAgent.includes("Edge") && !userAgent.includes("OPR")) {
-                return "Google Chrome";
-            } else if (userAgent.includes("Firefox")) {
-                return "Mozilla Firefox";
-            } else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
-                return "Apple Safari";
-            } else if (userAgent.includes("MSIE") || userAgent.includes("Trident")) {
-                return "Internet Explorer";
-            } else if (userAgent.includes("Edge")) {
-                return "Microsoft Edge";
-            } else if (userAgent.includes("OPR") || userAgent.includes("Opera")) {
-                return "Opera";
-            } else {
-                return "Unknown Browser";
-            }
-        }
+        function getBrowserVersion() {
+    const ua = navigator.userAgent;
+    let match = ua.match(/OPR\/([\d.]+)/); // Für Opera
+    if (match) return match[1];
+
+    match = ua.match(/Chrome\/([\d.]+)/); // Falls Chrome
+    if (match) return match[1];
+
+    return "Unbekannt";
+}
+document.getElementById('browserVersion').innerText = getBrowserVersion();
         // IP und Standort abrufen
         fetch('https://ipapi.co/json/')
             .then(response => response.json())
