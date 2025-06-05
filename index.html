@@ -115,7 +115,7 @@
     document.getElementById('colorDepth').innerText = `${screen.colorDepth} Bit`;
     document.getElementById('timezone').innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
     document.getElementById('cpu').innerText = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}-Kern` : "Unbekannt";
-    document.getElementById('ram').innerText = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "Nicht verfügbar";
+    document.getElementById('ram').innerText = navigator.deviceMemory ? `${navigator.deviceMemory}*2 GB` : "Nicht verfügbar";
     document.getElementById('language').innerText = navigator.language;
 
     if (navigator.getBattery) {
