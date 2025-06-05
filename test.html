@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deine Daten</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: #f4f4f4; padding: 20px; border-radius: 10px; }
+        h1 { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Deine Daten</h1>
+        <p><strong>IP-Adresse:</strong> <span id="ip">Lädt...</span></p>
+        <p><strong>Standort:</strong> <span id="location">Lädt...</span></p>
+        <p><strong>Browser:</strong> <span id="browser"></span></p>
+        <p><strong>Browser-Version:</strong> <span id="browserVersion"></span></p>
+        <p><strong>Betriebssystem:</strong> <span id="os"></span></p>
+        <p><strong>Gerät:</strong> <span id="device"></span></p>
+        <p><strong>Bildschirmauflösung:</strong> <span id="resolution"></span></p>
+        <p><strong>Farbtiefe:</strong> <span id="colorDepth"></span></p>
+        <p><strong>Zeitzone:</strong> <span id="timezone"></span></p>
+        <p><strong>CPU-Kerne:</strong> <span id="cpu"></span></p>
+        <p><strong>RAM (geschätzt):</strong> <span id="ram"></span></p>
+        <p><strong>Browser-Sprache:</strong> <span id="language"></span></p>
+        <p><strong>Akku-Status:</strong> <span id="battery">Lädt...</span></p>
+    </div>
+
+    <script>
+        function getBrowser()
+        {
+            let userAgent = navigator.userAgent;
+            
+            if (userAgent.includes("Chrome") && !userAgent.includes("Edge") && !userAgent.includes("OPR")) {
+                return "Google Chrome";
+            } else if (userAgent.includes("Firefox")) {
+                return "Mozilla Firefox";
+            } else if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
+                return "Apple Safari";
+            } else if (userAgent.includes("MSIE") || userAgent.includes("Trident")) {
+                return "Internet Explorer";
+            } else if (userAgent.includes("Edge")) {
+                return "Microsoft Edge";
+            } else if (userAgent.includes("OPR") || userAgent.includes("Opera")) {
+                return "Opera";
+            } else {
+                return "Unknown Browser";
+            }
+        }
+        // IP und Standort abrufen
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip').innerText = data.ip;
+                document.getElementById('location').innerText = `${data.city}, ${data.region}, ${data.country_name}`;
+            })
+            .catch(() => {
+                document.getElementById('ip').innerText = 'Fehler beim Abrufen';
+                document.getElementById('location').innerText = 'Fehler beim Abrufen';
+            });
+
+        // Browser-, Gerätedaten und Betriebssystem abrufen
+        const userAgent = navigator.userAgent;
+        document.getElementById('browser').innerText = getBrowser();
+        document.getElementById('browserVersion').innerText = navigator.appVersion;
+
+        let os = "Unbekannt";
+        if (userAgent.includes("Windows")) os = "Windows";
+        else if (userAgent.includes("Mac OS")) os = "MacOS";
+        else if (userAgent.includes("Android")) os = "Android";
+        else if (userAgent.includes("iPhone")) os = "iOS";
+        document.getElementById('os').innerText = os;
+
+        document.getElementById('device').innerText = /Mobi|Android/i.test(userAgent) ? "Mobilgerät" : "Desktop";
+        document.getElementById('resolution').innerText = `${screen.width}x${screen.height}`;
+        document.getElementById('colorDepth').innerText = `${screen.colorDepth} Bit`;
+        document.getElementById('timezone').innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        document.getElementById('cpu').innerText = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}-Kern` : "Unbekannt";
+        document.getElementById('ram').innerText = navigator.deviceMemory * 2 ? `${navigator.deviceMemory * 2} GB` : "Nicht verfügbar";
+        document.getElementById('language').innerText = navigator.language;
+        
+        // Akku-Status abrufen
+        if (navigator.getBattery) {
+            navigator.getBattery().then(battery => {
+                document.getElementById('battery').innerText = `${(battery.level * 100).toFixed(0)}% ${battery.charging ? '(Lädt)' : ''}`;
+            });
+        } else {
+            document.getElementById('battery').innerText = "Nicht verfügbar";
+        }
+    </script>
+</body>
+</html>
