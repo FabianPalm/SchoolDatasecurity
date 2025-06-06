@@ -52,7 +52,7 @@
 <div class="container">
     <h1>Deine Daten</h1>
     <p><strong>IP-Adresse:</strong> <span id="ip">Lädt...</span></p>
-    <p><strong>Standort:</strong> <span id="location">Lädt...</span></p>
+    <p><strong>Wohnort:</strong> <span id="location">Lädt...</span></p>
     <p><strong>Browser:</strong> <span id="browser"></span></p>
     <p><strong>Browser-Version:</strong> <span id="browserVersion"></span></p>
     <p><strong>Betriebssystem:</strong> <span id="os"></span></p>
@@ -125,7 +125,7 @@
     document.getElementById('colorDepth').innerText = `${screen.colorDepth} Bit`;
     document.getElementById('timezone').innerText = Intl.DateTimeFormat().resolvedOptions().timeZone;
     document.getElementById('cpu').innerText = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}-Kern` : "Unbekannt";
-    document.getElementById('ram').innerText = navigator.deviceMemory ? `${navigator.deviceMemory}*2 GB` : "Nicht verfügbar";
+    document.getElementById('ram').innerText = navigator.deviceMemory ? `${navigator.deviceMemory*2}` : "Nicht verfügbar";
     document.getElementById('language').innerText = navigator.language;
 
     if (navigator.getBattery) {
